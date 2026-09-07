@@ -6,7 +6,7 @@ Built as an academic project by **Shruti**, **Huda**, and **Harshvardhan** (MSc.
 
 ## Demo
 
-**Video walkthrough:** _[add your video link here — e.g. YouTube (unlisted) or Google Drive]_
+**Video walkthrough:** [Watch on Google Drive](https://drive.google.com/file/d/1GwpdfF16x5HhRBbCW3BDus6uPjueIz6z/view?usp=sharing)
 
 | Discover | Chatbot in action |
 |---|---|
