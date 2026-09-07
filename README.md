@@ -2,8 +2,6 @@
 
 Nutrix AI is a climate-intelligent food recommendation app. It combines real-time weather data with how you're feeling right now to recommend Indian dishes that actually fit the moment — then finds nearby restaurants that serve them.
 
-Built as an academic project by **Shruti**, **Huda**, and **Harshvardhan** (MSc. AI/ML).
-
 ## Demo
 
 **Video walkthrough:** [Watch on Google Drive](https://drive.google.com/file/d/1GwpdfF16x5HhRBbCW3BDus6uPjueIz6z/view?usp=sharing)
@@ -87,3 +85,5 @@ None of these are included in this repo — you'll need to sign up for your own 
 ## License
 
 Academic project — built for coursework, not for commercial use.
+
+Built by **Huda**, **Shruti**, and **Harshvardhan** (MSc. AI/ML).
