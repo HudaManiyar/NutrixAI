@@ -1,0 +1,44 @@
+# ── Web framework ──────────────────────────────────────
+fastapi==0.115.0
+uvicorn==0.30.6
+starlette==0.38.2
+
+# ── HTTP / Networking ───────────────────────────────────
+requests==2.32.3
+httpx==0.27.2
+
+# ── Data ────────────────────────────────────────────────
+pandas>=2.2.2
+numpy>=2.1.0
+
+# ── AI / LLM ────────────────────────────────────────────
+groq==0.9.0
+# FIXED: was "google-generativeai" with wrong import style in gemini_service.py
+# The code now uses `import google.generativeai as genai` — correct for this package.
+google-generativeai>=0.7.0
+
+# Optional: local Ollama (ai_logic.py fallback - only needed if running Ollama locally)
+ollama
+
+# ── Environment / Config ─────────────────────────────────
+python-dotenv==1.0.1
+
+# ── Utilities ─────────────────────────────────────────────
+rapidfuzz==3.9.6
+typing_extensions==4.12.2
+annotated-types==0.7.0
+pytz==2024.1
+
+# ── Web scraping (restaurant_guru_scraper.py) ────────────
+# Install separately if needed: playwright install chromium
+playwright
+
+# ── Core ──────────────────────────────────────────────────
+certifi==2024.7.4
+charset-normalizer==3.3.2
+urllib3==2.2.2
+click==8.1.7
+colorama==0.4.6
+anyio==4.4.0
+sniffio==1.3.1
+h11==0.14.0

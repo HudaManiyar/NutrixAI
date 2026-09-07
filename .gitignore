@@ -1,0 +1,40 @@
+# ── Secrets ──────────────────────────────────────────────────────────────
+backend/.env
+.env
+.env.local
+
+# ── Node / frontend ──────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Python / backend ─────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+backend/venv/
+venv/
+*.egg-info/
+
+# ── Backend debug / scratch files (not part of the app) ─────────────────
+backend/diag_*.py
+backend/diag_*.txt
+backend/tmp_*.txt
+backend/test_*.py
+backend/error_trace.log
+backend/out.json
+backend/response_output.json
+backend/test_out*.txt
+
+# ── Editor / OS ───────────────────────────────────────────────────────────
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ── Misc stray files not part of the app ─────────────────────────────────
+/index.html
+/patch_dish_images.js
+/patch_dish_images.py
+/Food/
