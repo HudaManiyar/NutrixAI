@@ -16,12 +16,11 @@ import { useSavedItems } from "./components/useSavedItems";
 import { NutrixFoodCard } from "./components/NutrixFoodCard";
 
 // ─── Weather food image imports ───────────────────────────────────────────────
-import acai from './assets/images/acai.png';
-import avocadotoast from './assets/images/avocadotoast.png';
-import ramen from './assets/images/ramen.png';
-import khichdi from './assets/images/khichdi.png';
-import pasta from './assets/images/pasta.png';
-import quinoa from './assets/images/quinoa.png';
+import acai from './assets/images/acai.webp';
+import avocadotoast from './assets/images/avocadotoast.webp';
+import ramen from './assets/images/ramen.webp';
+import khichdi from './assets/images/khichdi.webp';
+import pasta from './assets/images/pasta.webp';
 import logoImg from './assets/images/logo.png';
 
 // ─── Self-hosted dish photos (replaces live Wikimedia/Unsplash lookups) ───────
@@ -64,7 +63,7 @@ import dishSamosa from './assets/images/food/samosa.jpg';
 import dishSoup from './assets/images/food/soup.jpg';
 import dishTea from './assets/images/food/tea.jpg';
 import dishThali from './assets/images/food/thali.jpg';
-import heroThali from './assets/images/thali_hero.png';
+import heroThali from './assets/images/thali_hero.webp';
 import dishToast from './assets/images/food/toast.jpg';
 import dishTomatoSoup from './assets/images/food/tomatosoup.jpg';
 import dishUpma from './assets/images/food/upma.jpg';
@@ -299,7 +298,8 @@ const filterByMealTime = (results, mealTime) => {
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [text, setText] = useState("");
-  const BACKEND_URL = "http://127.0.0.1:8000";
+  // Backend address comes from VITE_API_URL (see frontend/.env.example); defaults to local dev
+  const BACKEND_URL = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
   const [location, setLocation] = useState("");
   const [coords, setCoords] = useState(null);
   const [results, setResults] = useState([]);

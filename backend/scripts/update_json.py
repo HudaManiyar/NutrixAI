@@ -1,7 +1,11 @@
 import json
 import os
+from pathlib import Path
 
-mapping_file = 'data/weather_food_mapping.json'
+# Paths are resolved from the backend/ folder, so the script works from any directory
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+
+mapping_file = BACKEND_DIR / 'data' / 'weather_food_mapping.json'
 with open(mapping_file, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
@@ -42,7 +46,7 @@ with open(mapping_file, 'w', encoding='utf-8') as f:
     json.dump(data, f, indent=4)
 print('Updated weather_food_mapping.json')
 
-health_rules_file = 'data/expanded_health_rules.json'
+health_rules_file = BACKEND_DIR / 'data' / 'expanded_health_rules.json'
 with open(health_rules_file, 'r', encoding='utf-8') as f:
     health_data = json.load(f)
 
