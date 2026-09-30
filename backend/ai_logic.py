@@ -171,6 +171,10 @@ def _keyword_detect(text: str) -> str | None:
 # MAIN CONDITION EXTRACTOR
 # ─────────────────────────────────────────────
 
+# Intents handled by dedicated branches in app.py, in priority order
+SPECIAL_INTENTS = ["medical_query", "food_craving", "spicy_craving", "travel_food"]
+
+
 def extract_condition(text: str) -> str:
     text_clean = text.lower().strip()
 
@@ -182,6 +186,12 @@ def extract_condition(text: str) -> str:
     keyword_result = _keyword_detect(text_clean)
     if keyword_result:
         parts = [p.strip() for p in keyword_result.split(",") if p.strip()]
+
+        # Special intents have their own branch in app.py and aren't health
+        # conditions, so return them directly (highest priority first)
+        for intent in SPECIAL_INTENTS:
+            if intent in parts:
+                return intent
         known_conditions = get_all_conditions()
         allowed_intents = set(known_conditions) | {"weather", "mood", "general_tasty"}
 

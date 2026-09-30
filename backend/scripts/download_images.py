@@ -1,6 +1,13 @@
 import os
+import sys
 import time
+from pathlib import Path
+
 import requests
+
+# Resolve paths from the backend/ folder and make its modules importable
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BACKEND_DIR))
 
 from image_service import search_wikimedia_image
 
@@ -73,7 +80,7 @@ known_urls = {
     "hot_soup": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Simple_vegetable_soup_2009.jpg",
 }
 
-out_dir = "../frontend/src/assets/images/foods"
+out_dir = BACKEND_DIR.parent / "frontend" / "src" / "assets" / "images" / "foods"
 os.makedirs(out_dir, exist_ok=True)
 
 headers = {

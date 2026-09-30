@@ -1,10 +1,11 @@
 import os
 import math
 import random
+import re
 import urllib.parse
 from typing import Optional
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from concurrent.futures import ThreadPoolExecutor
 
@@ -418,6 +419,21 @@ def get_food_image_url(dish: str):
 # ─────────────────────────────────────────────
 # RECOMMEND ENDPOINT
 # ─────────────────────────────────────────────
+# Phrases that introduce a craving, and filler words around the dish name.
+# Both are removed as whole words only, so letters inside dish names survive
+# ("pasta" must not lose its "a"s).
+CRAVING_PHRASES = ["recipe for", "how to make", "i want to eat", "craving"]
+CRAVING_FILLER = ["can you", "please", "give", "show", "tell", "some", "the", "me", "a", "an"]
+
+
+def extract_craving_dish(text: str) -> str:
+    dish = text.lower()
+    for phrase in CRAVING_PHRASES + CRAVING_FILLER:
+        dish = re.sub(rf"\b{re.escape(phrase)}\b", " ", dish)
+    dish = re.sub(r"[^\w\s-]", " ", dish)   # drop punctuation like "?" or "!"
+    return " ".join(dish.split())
+
+
 @app.post("/recommend")
 def recommend(
     text: str,
@@ -428,6 +444,7 @@ def recommend(
     neighbourhood: Optional[str] = None,
 ):
     condition = extract_condition(text)
+    is_medical_query = False
 
     if condition == "greeting":
         return [{"type": "question", "message": "Hello 😊 How are you feeling today?", "restaurants": []}]
@@ -486,13 +503,7 @@ def recommend(
     # Handle food craving — extract dish name and use it directly
     elif condition == "food_craving":
         # Extract dish name from query
-        craving_keywords = ["recipe for", "how to make", "i want to eat", "craving"]
-        craving_dish = text.lower()
-        for kw in craving_keywords:
-            craving_dish = craving_dish.replace(kw, "").strip()
-        # Clean up common words
-        for word in ["me", "a", "some", "the", "please", "can you"]:
-            craving_dish = craving_dish.replace(word, "").strip()
+        craving_dish = extract_craving_dish(text)
         allowed_dishes = [craving_dish] if len(craving_dish) > 2 else get_weather_foods(weather_data, count=8)
         condition = "food_craving"
         is_weather_query = True  # use weather restaurant pipeline
@@ -508,7 +519,9 @@ def recommend(
         # Extract the actual health condition from remaining text
         remaining = text.lower()
         for word in ["medicine", "tablet", "drug", "doctor", "prescription", "for", "what"]:
-            remaining = remaining.replace(word, "").strip()
+            remaining = re.sub(rf"\b{word}s?\b", " ", remaining)
+        remaining = " ".join(remaining.split())
+        is_medical_query = True
         sub_condition = extract_condition(remaining) if len(remaining) > 3 else "unknown"
         if sub_condition not in ["unknown", "greeting", "medical_query"]:
             allowed_dishes = get_allowed_dishes(sub_condition, diet)
@@ -664,15 +677,13 @@ def recommend(
                     "medical_query": "⚠️ For medicines, please consult a doctor. Here are helpful foods:",
                     "spicy_craving": "Spicy picks for you! 🌶️",
                     "weather": "",
-                }.get(condition, "")
+                }.get("medical_query" if is_medical_query else condition, "")
             }
 
         except Exception as e:
-            with open(r"c:\Users\shrut\Downloads\Food\Food\backend\error_trace.log", "a", encoding="utf-8") as f:
-                import traceback
-                f.write(f"\n[process_dish] Error on '{dish}': {e}\n")
-                f.write(traceback.format_exc())
+            import traceback
             print(f"[process_dish] Error on '{dish}': {e}")
+            traceback.print_exc()
             return None
 
     worker_count = min(3, max(1, len(allowed_dishes)))
@@ -689,10 +700,15 @@ def recommend(
 
 
 # ─────────────────────────────────────────────
-# DEBUG ENDPOINTS
+# DEBUG ENDPOINTS — only available when DEBUG=true in .env
 # ─────────────────────────────────────────────
 
-@app.get("/debug/weather")
+def require_debug():
+    if os.getenv("DEBUG", "false").strip().lower() != "true":
+        raise HTTPException(status_code=404, detail="Not Found")
+
+
+@app.get("/debug/weather", dependencies=[Depends(require_debug)])
 def debug_weather(lat: float = 12.9716, lon: float = 77.5946):
     key = os.getenv("WEATHERAPI_KEY", "")
     result = {
@@ -731,7 +747,7 @@ def debug_weather(lat: float = 12.9716, lon: float = 77.5946):
     return result
 
 
-@app.get("/debug/location")
+@app.get("/debug/location", dependencies=[Depends(require_debug)])
 def debug_location(lat: float, lon: float):
     """Quick check: what neighbourhood does Geoapify resolve for these coords?"""
     return reverse_geocode(lat, lon)

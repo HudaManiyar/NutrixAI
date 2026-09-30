@@ -52,7 +52,7 @@ def load_menu_data():
         if _data_loaded:
             return _menu_data
 
-        file_path = "data/restarunts.csv"
+        file_path = "data/restaurants.csv"
 
         if not os.path.exists(file_path):
             print(f"[menu_data] Dataset not found: {file_path}")
