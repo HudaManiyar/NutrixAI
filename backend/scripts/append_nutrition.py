@@ -1,7 +1,11 @@
 import csv
 import os
+from pathlib import Path
 
-csv_file = 'data/nutrition_master.csv'
+# Paths are resolved from the backend/ folder, so the script works from any directory
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+
+csv_file = BACKEND_DIR / 'data' / 'nutrition_master.csv'
 
 # Item Name,Calories (kcal),Carbohydrates (g),Protein (g),Fats (g),Fiber (g),Sodium (mg)
 new_rows = [

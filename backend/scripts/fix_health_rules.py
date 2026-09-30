@@ -1,7 +1,11 @@
 import json
 import os
+from pathlib import Path
 
-RULES_FILE = "data/expanded_health_rules.json"
+# Paths are resolved from the backend/ folder, so the script works from any directory
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+
+RULES_FILE = BACKEND_DIR / "data" / "expanded_health_rules.json"
 
 def main():
     if not os.path.exists(RULES_FILE):
