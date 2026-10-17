@@ -24,15 +24,14 @@ Nutrix AI is a climate-intelligent food recommendation app. It combines real-tim
 2. **Understanding the message** — a rule-based keyword matcher (`backend/ai_logic.py`, with fuzzy matching for typos) classifies what you type into either:
    - a **health condition** such as fever, cold & cough or acid reflux (27 conditions in `backend/data/expanded_health_rules.json`, each with foods to prefer and avoid), or
    - an **intent**: a specific dish craving ("I want to eat pasta"), a spicy craving, food for travel, a question about medicine, or general browsing by weather.
-3. **Choosing dishes** — candidate dishes come from the matching health rules or from a weather-to-food mapping (warming vs. cooling, hydrating, etc.). Each dish is scored on health fit (40%), weather fit (25%), discovery (30%) and variety (5%).
+3. **Choosing dishes** — candidate dishes come from the matching health rules or from a weather-to-food mapping (warming vs. cooling, hydrating, etc.). Each dish is scored on health fit (40%), weather fit (25%), how well-rated the nearby places serving it are (30%), and a small random variety term (5%).
 4. **Recommendations** — you get a feed of dishes with macros, a match score and recipes, plus nearby places that serve them: restaurants from a bundled menu dataset (`backend/data/restaurants.csv`) matched to your area, and places found through Geoapify.
 
 ### Where the LLMs are used
 
-The chat itself does not depend on an LLM. Two LLMs (Groq's Llama 3.3 70B as primary, Google Gemini as fallback) are used for:
+The chat itself does not depend on an LLM. The LLM (Groq's Llama 3.3 70B as primary, Google Gemini as fallback) is used for **unknown conditions**: if you mention a condition that isn't in the rules file, it generates foods to prefer and avoid for it. These rules are saved to the rules file and reused.
 
-- **Unknown conditions** — if you mention a condition that isn't in the rules file, the LLM generates foods to prefer and avoid for it. These rules are saved to the rules file and reused.
-- **Restaurant re-ranking** — checking which nearby restaurants are most likely to serve the recommended dish.
+An LLM step for re-ranking restaurants exists in `gemini_service.py` but is currently disabled, because its token cost outweighed the benefit.
 
 Without API keys, the app still runs on the keyword matcher and the existing rules.
 
@@ -43,7 +42,7 @@ Nutrix AI is an academic project and **not medical advice**. Food suggestions fo
 ## Tech stack
 
 - **Frontend:** React (Vite), Framer Motion, Lucide icons
-- **Backend:** FastAPI (Python); keyword-based intent detection; Groq (Llama 3.3 70B) with Google Gemini as fallback for generating new health rules and re-ranking restaurants; Geoapify for location and places; WeatherAPI for live weather
+- **Backend:** FastAPI (Python); keyword-based intent detection; Groq (Llama 3.3 70B) with Google Gemini as fallback for generating health rules for new conditions; Geoapify for location and places; WeatherAPI for live weather
 
 ## Project structure
 
