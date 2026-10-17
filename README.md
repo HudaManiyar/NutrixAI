@@ -107,8 +107,3 @@ None of these are included in this repo — you'll need to sign up for your own 
 
 `DEBUG=true` in `backend/.env` enables the `/debug/weather` and `/debug/location` endpoints for checking your keys. Keep it `false` when deploying.
 
-## License
-
-Academic project — built for coursework, not for commercial use.
-
-Built by **Huda**, **Shruti**, and **Harshvardhan** (MSc. AI/ML).
