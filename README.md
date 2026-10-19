@@ -107,3 +107,6 @@ None of these are included in this repo — you'll need to sign up for your own 
 
 `DEBUG=true` in `backend/.env` enables the `/debug/weather` and `/debug/location` endpoints for checking your keys. Keep it `false` when deploying.
 
+## Data and image credits
+
+The restaurant menu dataset was compiled from publicly available online listings for academic use; its original source was not recorded. Dish images come from Wikimedia Commons, Unsplash and TheMealDB. See [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for authors, licences and details.
