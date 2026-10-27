@@ -108,4 +108,4 @@ None of these are included in this repo — you'll need to sign up for your own 
 
 ## Data and image credits
 
-The restaurant menu dataset was compiled from publicly available online listings for academic use; its original source was not recorded. Dish images come from Wikimedia Commons, Unsplash and TheMealDB. See [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for authors, licences and details.
+The restaurant menu dataset was compiled from publicly available online listings for academic use. Dish images come from Unsplash and Pexels, and some were generated with Google AI Studio.. See [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for authors, licences and details.
